@@ -4,10 +4,7 @@
 
 package com.mycompany.gestion.actividades.limpieza;
 
-/**
- *
- * @author alond
- */
+
 public class GestionActividadesLimpieza {
 
     public static void main(String[] args) {
