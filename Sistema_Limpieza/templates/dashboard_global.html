@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4 fw-bold" style="color: var(--muted-700);">
+  🌍 Dashboard Global
+</h2>
+
+<div class="row g-3">
+
+  <!-- CARD: Usuarios -->
+  <div class="col-md-3">
+    <div class="card" style="background: var(--sweet-aqua); color: var(--muted-700);">
+      <div class="card-body text-center">
+        <h5 class="fw-bold mb-1">Usuarios</h5>
+        <div style="font-size:32px; font-weight:700;">{{ total_usuarios }}</div>
+        <small>Registrados</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD: Cuadrillas -->
+  <div class="col-md-3">
+    <div class="card" style="background: var(--panorama); color: white;">
+      <div class="card-body text-center">
+        <h5 class="fw-bold mb-1">Cuadrillas</h5>
+        <div style="font-size:32px; font-weight:700;">{{ total_cuadrillas }}</div>
+        <small>Activas</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD: Actividades -->
+  <div class="col-md-3">
+    <div class="card" style="background: var(--blue-birds); color: white;">
+      <div class="card-body text-center">
+        <h5 class="fw-bold mb-1">Actividades</h5>
+        <div style="font-size:32px; font-weight:700;">{{ total_actividades }}</div>
+        <small>En sistema</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD COLONIAS -->
+    <div class="col-md-3">
+        <div class="card shadow-sm"
+             style="background: var(--panorama); color: white; border-radius: 16px; box-shadow:0 8px 20px rgba(20,40,50,0.10);">
+            <div class="card-body text-center py-4">
+                <h5 class="fw-semibold">Colonias</h5>
+                <p style="font-size: 38px; font-weight: 700;">{{ total_colonias }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- LISTA DE ACTIVIDADES RECIENTES -->
+<div class="card mt-4">
+  <div class="card-body">
+    <h5 class="fw-bold mb-3" style="color: var(--muted-700);">📋 Actividades recientes</h5>
+
+    <div class="table-list">
+
+      {% for actividad in recientes %}
+      <div class="row mb-2 p-2" 
+           style="display:flex; align-items:center; gap:12px; border-radius:10px; background: rgba(0,150,209,0.04);">
+
+        <div style="width:10px; height:10px; background: var(--blue-birds); border-radius:50%;"></div>
+
+        <div style="flex:1;">
+          <div class="fw-semibold">{{ actividad.nombre }}</div>
+          <small style="color:#6b7b82;">{{ actividad.colonia }} • {{ actividad.fecha.strftime('%d/%m/%Y') }}</small>
+        </div>
+
+        <div class="badge bg-success">{{ actividad.estado }}</div>
+      </div>
+
+      {% else %}
+      <p class="text-muted">No hay actividades recientes.</p>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

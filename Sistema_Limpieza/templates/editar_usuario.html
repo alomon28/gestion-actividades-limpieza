@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4" style="color: var(--muted-700);">
+    ✏ Editar Usuario
+</h2>
+
+<div class="card p-4"
+     style="max-width: 600px; margin:auto;
+            border-radius:14px;
+            box-shadow:0 8px 28px rgba(20,40,50,0.06);">
+
+    <form action="{{ url_for('editar_usuario', id=usuario.id) }}" method="POST">
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Nombre</label>
+            <input type="text" class="form-control"
+                   name="nombre" value="{{ usuario.nombre }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Correo</label>
+            <input type="email" class="form-control"
+                   name="correo" value="{{ usuario.correo }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Rol</label>
+            <select class="form-select" name="rol" required>
+                <option value="Admin" {{ 'selected' if usuario.rol=='Admin' else '' }}>Admin</option>
+                <option value="JefeCuadrilla" {{ 'selected' if usuario.rol=='JefeCuadrilla' else '' }}>Jefe de Cuadrilla</option>
+                <option value="Empleado" {{ 'selected' if usuario.rol=='Empleado' else '' }}>Empleado</option>
+            </select>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary" style="border-radius:10px;">
+                💾 Guardar Cambios
+            </button>
+
+            <a href="{{ url_for('gestion_usuarios') }}"
+               class="btn btn-secondary"
+               style="border-radius:10px;">
+                ⬅ Volver
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

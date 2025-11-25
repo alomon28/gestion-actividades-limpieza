@@ -1,0 +1,58 @@
+<!-- asignaciones.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="fw-bold mb-4" style="color: var(--muted-700);">
+    Asignaciones
+</h2>
+
+<div class="card p-4" style="background:white; border-radius:14px; box-shadow:0 8px 30px rgba(20,40,50,0.04);">
+
+    <table class="table align-middle">
+        <thead style="background: var(--sweet-aqua); color: var(--muted-700);">
+            <tr>
+                <th>Actividad</th>
+                <th>Cuadrilla</th>
+                <th>Colonia</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for a in asignaciones %}
+            <tr class="table-row-hover">
+                <td>{{ a.actividad }}</td>
+
+                <td>
+                    {% if a.cuadrilla %}
+                        {{ a.cuadrilla }}
+                    {% else %}
+                        <span class="text-muted">Sin cuadrilla</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ a.colonia }}</td>
+
+                <td>
+                    {% if a.fecha %}
+                        {{ a.fecha.strftime('%d/%m/%Y %H:%M') }}
+                    {% else %}
+                        <span class="text-muted">Sin fecha</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="badge"
+                          style="background: var(--panorama); color:white; padding:6px 10px; border-radius:8px;">
+                        {{ a.estado }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-3 fw-bold" style="color: var(--muted-700);">
+  👤 Panel del Empleado
+</h2>
+
+<a class="btn btn-primary mb-4" href="{{ url_for('mi_cuadrilla') }}">
+  Ver mi cuadrilla y jefe
+</a>
+
+<p class="fw-semibold" style="color: var(--muted-700);">
+  Estas son tus actividades asignadas:
+</p>
+
+<div class="card">
+  <div class="card-body">
+
+    <table class="table align-middle">
+      <thead>
+        <tr style="background: rgba(0,150,209,0.08); color: var(--muted-700);">
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Colonia</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Evidencias</th>
+          <th style="min-width:140px;">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for actividad in actividades %}
+        <tr class="border-bottom">
+          <td>{{ actividad['actividad'].id }}</td>
+          <td class="fw-semibold">{{ actividad['actividad'].nombre }}</td>
+          <td>{{ actividad['actividad'].colonia }}</td>
+          <td>
+            {{ actividad['actividad'].fecha.strftime('%d/%m/%Y %H:%M') if actividad['actividad'].fecha else 'Sin fecha' }}
+          </td>
+          <td>
+            <span class="badge 
+              {% if actividad['actividad'].estado == 'Pendiente' %} bg-secondary
+              {% elif actividad['actividad'].estado == 'En Proceso' %} bg-warning text-dark
+              {% else %} bg-success
+              {% endif %}
+            ">
+              {{ actividad['actividad'].estado }}
+            </span>
+          </td>
+          <td>{{ actividad['evid_count'] }}</td>
+
+          <td>
+            <form action="{{ url_for('actualizar_estado', id_actividad=actividad['actividad'].id) }}" 
+                  method="POST" class="mb-1">
+
+              <select name="estado" class="form-select form-select-sm mb-1">
+                <option value="Pendiente" {% if actividad['actividad'].estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="En Proceso" {% if actividad['actividad'].estado == 'En Proceso' %}selected{% endif %}>En Proceso</option>
+                <option value="Completada" {% if actividad['actividad'].estado == 'Completada' %}selected{% endif %}>Completada</option>
+              </select>
+
+              <button type="submit" class="btn btn-primary btn-sm w-100">
+                Actualizar
+              </button>
+            </form>
+
+            <a href="{{ url_for('ver_evidencias', actividad_id=actividad['actividad'].id) }}"
+               class="btn btn-outline-primary btn-sm w-100">
+              Ver Evidencias
+            </a>
+          </td>
+        </tr>
+
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted py-3">
+            No tienes actividades asignadas.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
+

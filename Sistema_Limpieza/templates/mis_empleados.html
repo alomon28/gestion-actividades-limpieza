@@ -1,0 +1,56 @@
+<!-- mis_empleados.html -->
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="p-3">
+
+    <h2 class="fw-bold" style="color: var(--primary-dark);">Mis Empleados</h2>
+
+    {% if cuadrillas %}
+
+        {% for c in cuadrillas %}
+        <div class="mt-4 card shadow-sm p-3" style="border-radius: 14px;">
+            
+            <h4 class="fw-semibold" style="color: var(--primary);">
+                Cuadrilla: {{ c.nombre }}
+            </h4>
+
+            {% if c.empleados %}
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered align-middle shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                    <thead style="background: var(--primary); color:white;">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for emp in c.empleados %}
+                        {% set u = emp.usuario %}
+                        <tr>
+                            <td>{{ u.id }}</td>
+                            <td>{{ u.nombre }}</td>
+                            <td>{{ u.correo }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+            {% else %}
+                <p class="text-muted">Esta cuadrilla no tiene empleados asignados.</p>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <p class="mt-2 text-muted">No tienes cuadrillas asignadas.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+

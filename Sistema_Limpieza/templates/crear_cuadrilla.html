@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="fw-bold mb-4" style="color: var(--muted-700);">
+    Crear Nueva Cuadrilla
+</h2>
+
+<div class="card p-4"
+     style="border-radius:14px; box-shadow:0 8px 28px rgba(20,40,50,0.06);">
+
+    <form method="POST">
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Nombre de la Cuadrilla</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Colonia</label>
+            <select name="colonia_id" class="form-select">
+                <option value="">-- Selecciona colonia --</option>
+                {% for c in colonias %}
+                <option value="{{ c.id }}">{{ c.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Crear nueva colonia</label>
+            <input type="text"
+                   name="nueva_colonia"
+                   class="form-control"
+                   placeholder="Escribe una nueva colonia">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Jefe de Cuadrilla</label>
+            <select name="jefe_id" class="form-select">
+                <option value="">Sin jefe</option>
+                {% for usuario, jefe in jefes %}
+                <option value="{{ jefe.id }}">{{ usuario.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+            <button class="btn btn-primary" style="border-radius:10px;">
+                Crear
+            </button>
+
+            <a href="{{ url_for('gestion_cuadrillas') }}"
+               class="btn btn-secondary"
+               style="border-radius:10px;">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+

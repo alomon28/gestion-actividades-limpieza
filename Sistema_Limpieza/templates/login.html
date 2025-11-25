@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .glass-card {
+        backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        border-radius: 16px;
+        transition: transform .3s;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .animate-fade { 
+        animation: fadeIn .8s ease; 
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="glass-card p-4 animate-fade" style="width: 380px;">
+
+        <h4 class="text-center mb-4" style="color: var(--blue-birds); font-weight: bold;">
+            Iniciar Sesión
+        </h4>
+
+        <form action="{{ url_for('login') }}" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label" style="color: var(--text-dark);">Correo electrónico</label>
+                <input type="email" class="form-control" name="correo"
+                       placeholder="usuario@correo.com" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" style="color: var(--text-dark);">Contraseña</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+
+            <button type="submit" class="btn w-100 text-white"
+                    style="background: var(--blue-birds); border-radius: 8px;">
+                Entrar
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p style="color: var(--text-dark);">¿No tienes cuenta?</p>
+            <a href="{{ url_for('registro') }}" 
+               class="btn btn-sm"
+               style="background: var(--panorama-blue); color: var(--white); border-radius: 8px;">
+                Registrarse
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4" style="color: var(--muted-700);">
+    👤 Gestión de Usuarios
+</h2>
+
+<div class="card"
+     style="border-radius:14px;
+            box-shadow:0 8px 28px rgba(20,40,50,0.06);">
+    <div class="card-body">
+
+        <!-- BOTÓN AGREGAR -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ url_for('registro') }}" class="btn btn-primary"
+               style="border-radius:10px;">
+               ➕ Agregar Usuario
+            </a>
+        </div>
+
+        <!-- TABLA -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead style="background: var(--muted-100); color: var(--muted-700);">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for u in usuarios %}
+                    <tr>
+                        <td>{{ u.id }}</td>
+                        <td>{{ u.nombre }}</td>
+                        <td>{{ u.correo }}</td>
+                        <td>{{ u.rol }}</td>
+                        <td>
+                            <a href="{{ url_for('editar_usuario', id=u.id) }}"
+                               class="btn btn-sm btn-secondary"
+                               style="border-radius:6px;">
+                               ✏ Editar
+                            </a>
+
+                            <a href="{{ url_for('eliminar_usuario', id=u.id) }}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('¿Eliminar usuario?')">
+                               🗑 Borrar
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

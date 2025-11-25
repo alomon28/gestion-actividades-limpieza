@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4" style="color: var(--muted-700);">
+    👥 Gestión de Cuadrillas
+</h2>
+
+<div class="card"
+     style="border-radius:14px;
+            box-shadow:0 8px 28px rgba(20,40,50,0.06);">
+    <div class="card-body">
+
+        <!-- BOTÓN AGREGAR -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ url_for('crear_cuadrilla') }}" class="btn btn-primary"
+               style="border-radius:10px;">
+               ➕ Nueva Cuadrilla
+            </a>
+        </div>
+
+        <!-- TABLA -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead style="background: var(--muted-100); color: var(--muted-700);">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Jefe Asignado</th>
+                        <th>Integrantes</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for c in cuadrillas %}
+                    <tr>
+                        <td>{{ c.id }}</td>
+                        <td>{{ c.nombre }}</td>
+                        <td>{{ c.jefe.nombre if c.jefe else 'Sin jefe' }}</td>
+                        <td>{{ c.integrantes|length }}</td>
+                        <td>
+                            <a href="{{ url_for('editar_cuadrilla', id=c.id) }}"
+                               class="btn btn-sm btn-secondary"
+                               style="border-radius:6px;">
+                               ✏ Editar
+                            </a>
+
+                            <a href="{{ url_for('eliminar_cuadrilla', id=c.id) }}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('¿Eliminar cuadrilla?')">
+                               🗑 Borrar
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

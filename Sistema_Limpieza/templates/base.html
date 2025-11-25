@@ -1,0 +1,399 @@
+<!-- base.html - Dashboard Style con paleta Blue-Birds / Ambrosia / Sweet Aqua / Panorama -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sistema de Limpieza</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* ===== PALETA  ===== */
+    :root{
+      --blue-birds: #0096D1;    /* primary accent */
+      --ambrosia:   #FFF4EA;    /* background / ivory */
+      --sweet-aqua: #A8EAD5;    /* secondary accent / cards */
+      --panorama:   #3EBDC6;    /* accent / highlights */
+      --muted-700:  #2B3942;    /* texto oscuro */
+      --glass: rgba(255,255,255,0.6);
+    }
+
+    /* ===== Reset / base ===== */
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--ambrosia) 0%, #F6FBFC 60%);
+      color: var(--muted-700);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ===== LAYOUT ===== */
+    .app {
+      display:flex;
+      min-height:100vh;
+      gap:30px;
+      align-items:stretch;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width:260px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      padding:28px 18px;
+      border-top-right-radius:18px;
+      border-bottom-right-radius:18px;
+      box-shadow: 0 6px 20px rgba(15,34,45,0.06);
+      position:fixed;
+      left:28px;
+      top:28px;
+      bottom:28px;
+      backdrop-filter: blur(6px);
+    }
+
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .brand .logo {
+      width:46px; height:46px;
+      background: linear-gradient(135deg, var(--blue-birds), var(--panorama));
+      border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      color:white; font-weight:700;
+      box-shadow: 0 6px 18px rgba(62,189,198,0.12);
+    }
+
+    .brand h3 { margin:0; font-size:18px; letter-spacing:0.2px; color:var(--muted-700);}
+
+    nav.nav-links { margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+
+    .nav-item {
+      position:relative;
+      padding:12px 14px;
+      color:var(--muted-700);
+      text-decoration:none;
+      border-radius:10px;
+      display:flex; align-items:center; gap:12px;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    /* animación highlight similar a la segunda imagen (barra azul que se desliza) */
+    .nav-item .dot {
+      width:10px; height:10px; border-radius:50%;
+      background: transparent;
+      transition: background .25s;
+    }
+
+    .nav-item:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(90deg, rgba(0,150,209,0.07), rgba(62,189,198,0.06));
+    }
+
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(0,150,209,0.14), rgba(62,189,198,0.06));
+      box-shadow: 0 8px 24px rgba(3,66,100,0.06);
+    }
+    .nav-item.active .dot {
+      background: var(--blue-birds);
+      box-shadow: 0 6px 16px rgba(0,150,209,0.14);
+    }
+
+    /* espacio inferior del sidebar */
+    .sidebar .bottom {
+      margin-top:auto;
+      font-size:13px;
+      color:#6b7b82;
+    }
+
+    /* MAIN AREA */
+    .main {
+      margin-left: 320px; /* deja espacio para sidebar + gap */
+      padding: 34px;
+      flex:1;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: transparent;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:flex-end;
+      padding: 10px 12px;
+      margin-bottom:14px;
+    }
+
+    .search {
+      margin-right:auto;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background: white;
+      padding:8px 12px;
+      border-radius:12px;
+      min-width:340px;
+      box-shadow: 0 10px 30px rgba(35,70,85,0.03);
+    }
+
+    .search input{
+      border:0; outline:none; background:transparent;
+    }
+
+    .user {
+      display:flex; align-items:center; gap:10px;
+    }
+
+    .user .avatar {
+      width:44px; height:44px; border-radius:12px;
+      background: linear-gradient(135deg,var(--sweet-aqua),var(--panorama));
+      display:flex;align-items:center;justify-content:center;
+      color:white; font-weight:600;
+      box-shadow:0 8px 18px rgba(62,189,198,0.12);
+    }
+
+    /* ===== GRID / Cards ===== */
+    .grid {
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap:20px;
+      align-items:start;
+      margin-top:8px;
+    }
+
+    .card {
+      background: white;
+      border-radius:14px;
+      padding:18px;
+      box-shadow: 0 8px 30px rgba(20,40,50,0.04);
+      overflow:hidden;
+      transform-origin: top center;
+      animation: floatIn .45s ease both;
+    }
+
+    /* Animación de entrada discreta */
+    @keyframes floatIn {
+      from { opacity:0; transform: translateY(12px) scale(.995); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* Área derecha: schedule / cards */
+    .schedule-list { display:flex; flex-direction:column; gap:12px; }
+
+    .schedule-item {
+      display:flex; gap:12px; align-items:center; padding:12px;
+      border-radius:10px; background: linear-gradient(90deg, rgba(62,189,198,0.03), rgba(0,150,209,0.02));
+      transition: transform .18s, box-shadow .18s, background .18s;
+    }
+
+    .schedule-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(10,40,60,0.06);
+    }
+
+    /* TABLA / LISTADO tipo segunda imagen */
+    .table-list {
+      margin-top:12px;
+    }
+
+    .table-list .row {
+      display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px;
+      transition: background .2s, transform .15s;
+    }
+    .table-list .row:hover { background: linear-gradient(90deg, rgba(0,150,209,0.06), rgba(62,189,198,0.03)); transform:translateY(-4px); }
+
+    /* Resalte animado tipo "bar" como en segunda imagen para fila seleccionada */
+    .table-list .row.selected {
+      background: linear-gradient(90deg, rgba(0,150,209,0.12), rgba(62,189,198,0.05));
+      box-shadow: 0 12px 26px rgba(0,150,209,0.08);
+    }
+
+    /* FORM LOGIN (puedes usar esta sección en la ruta /login) */
+    .auth-wrap {
+      min-height: calc(100vh - 100px);
+      display:flex; align-items:center; justify-content:center; gap:30px;
+      padding:40px;
+    }
+    .auth-card {
+      width:420px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.98));
+      border-radius:16px;
+      padding:28px;
+      box-shadow: 0 16px 40px rgba(20,40,60,0.06);
+    }
+    .auth-hero {
+      width:520px;
+      border-radius:16px;
+      padding:26px;
+      background: linear-gradient(135deg, rgba(0,150,209,0.06), rgba(62,189,198,0.06));
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    .auth-card h2 { margin:0 0 16px 0; color:var(--muted-700); }
+    .form-control {
+      border-radius:12px;
+      border: 1px solid rgba(40,60,70,0.06);
+      padding:12px 14px;
+      background: rgba(255,255,255,0.96);
+      transition: box-shadow .18s, border-color .18s;
+    }
+    .form-control:focus {
+      outline:none;
+      box-shadow: 0 8px 30px rgba(0,150,209,0.12);
+      border-color: var(--blue-birds);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--blue-birds), var(--panorama));
+      border:0; color:white;
+      padding:10px 16px; border-radius:12px;
+      transition: transform .12s ease, box-shadow .12s;
+      box-shadow: 0 8px 18px rgba(0,150,209,0.12);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,150,209,0.14); }
+
+    /* Subtle button loading micro-animation (ripple-like) */
+    .btn-primary::after{
+      content: "";
+      position:absolute;
+      width:0; height:0; border-radius:50%;
+      background: rgba(255,255,255,0.08);
+      left:50%; top:50%; transform:translate(-50%,-50%);
+      transition: width .28s ease, height .28s ease, opacity .28s;
+      opacity:0;
+    }
+    .btn-primary:active::after{
+      width:200px; height:200px; opacity:1;
+      transition: none;
+    }
+
+    /* small responsive */
+    @media (max-width:1000px) {
+      .grid { grid-template-columns: 1fr; }
+      .sidebar { position:relative; width:100%; height:auto; border-radius:12px; left:12px; right:12px; top:12px; margin-bottom:10px; }
+      .main { margin-left:0; padding:18px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">SL</div>
+        <h3>Sistema Limpieza</h3>
+      </div>
+
+      <nav class="nav-links">
+        <!-- Usa la clase 'active' para la sección actual -->
+        <a href="{{ url_for('dashboard_global') }}" class="nav-item active"><span class="dot"></span>🏠 Inicio</a>
+        <a href="{{ url_for('asignaciones') }}" class="nav-item"><span class="dot"></span>📄 Asignaciones</a>
+        <a href="{{ url_for('gestion_usuarios') }}" class="nav-item"><span class="dot"></span>👥 Usuarios</a>
+        <a href="{{ url_for('gestion_cuadrillas') }}" class="nav-item"><span class="dot"></span>🧹 Cuadrillas</a>
+        <a href="{{ url_for('ver_historial') }}" class="nav-item"><span class="dot"></span>📚 Historial</a>
+      </nav>
+
+      <div class="bottom">
+        <hr />
+        <div style="display:flex;gap:12px;align-items:center">
+          <small>v1.0 • &copy; {{ config.get('APP_YEAR', 2025) }}</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="topbar">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#6b7b82" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input placeholder="Buscar..." />
+        </div>
+
+        <div class="user">
+          {% if session.get('rol') %}
+            <div style="text-align:right">
+              <div style="font-size:13px;color:#55707A">Hola,</div>
+              <div style="font-weight:600">{{ session.get('nombre', 'Usuario') }}</div>
+            </div>
+            <div class="avatar">{{ session.get('nombre','U')[0] }}</div>
+            <a href="{{ url_for('logout') }}" class="btn btn-sm" style="background:transparent;border:1px solid rgba(30,60,80,0.06);padding:8px 12px;border-radius:8px;">Cerrar sesión</a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Iniciar sesión</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- FLASH MESSAGES -->
+      <div class="mt-3">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+      </div>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      {% block content %}
+      <div class="grid">
+        <div class="card">
+          <h4 style="margin:0 0 8px;">Panel principal</h4>
+          <p style="margin:0 0 10px;color:#6b7b82">Resumen de actividades recientes y métricas rápidas.</p>
+
+          <div class="table-list">
+            <div class="row selected">
+              <div style="width:12px;height:12px;border-radius:4px;background:var(--blue-birds)"></div>
+              <div style="flex:1">
+                <div style="font-weight:600">Asignación 1023</div>
+                <small style="color:#6b7b82">Cuadrilla: Alfa • Fecha: 2025-05-27</small>
+              </div>
+              <div style="min-width:120px;text-align:right;color:#55707A">En progreso</div>
+            </div>
+
+            <div class="row">
+              <div style="width:12px;height:12px;border-radius:4px;background:#E8F7F3"></div>
+              <div style="flex:1"><div style="font-weight:600">Asignación 1022</div><small style="color:#6b7b82">Cuadrilla: Beta</small></div>
+              <div style="min-width:120px;text-align:right;color:#8FBFC0">Pendiente</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h5 style="margin:0 0 8px;">Agenda de hoy</h5>
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--sweet-aqua),var(--panorama));display:flex;align-items:center;justify-content:center;color:white">KM</div>
+              <div>
+                <div style="font-weight:600">Revisión zona 3</div>
+                <small style="color:#6b7b82">10:00 - 11:30 • Jefe: Karla</small>
+              </div>
+            </div>
+
+            <div class="schedule-item">
+              <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--blue-birds),var(--panorama));display:flex;align-items:center;justify-content:center;color:white">AS</div>
+              <div>
+                <div style="font-weight:600">Recolección de residuos</div>
+                <small style="color:#6b7b82">13:00 - 15:00 • Cuadrilla: Alfa</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

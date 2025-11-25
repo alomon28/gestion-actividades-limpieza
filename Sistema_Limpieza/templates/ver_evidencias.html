@@ -1,0 +1,69 @@
+<!-- ver_evidencias.html -->
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="fw-bold" style="color: var(--primary-dark);">📸 Evidencias - {{ actividad.nombre }}</h2>
+
+<p>
+  <strong>Colonia:</strong> {{ actividad.colonia }}
+  |
+  <strong>Fecha:</strong> {{ actividad.fecha.strftime('%d/%m/%Y %H:%M') if actividad.fecha else 'Sin fecha' }}
+</p>
+
+{% if session.get('rol') == 'Empleado' %}
+<div class="card mb-3 shadow-sm" style="border-radius: 14px;">
+  <div class="card-body">
+    <h5 class="fw-semibold" style="color: var(--primary-dark);">Subir evidencias</h5>
+
+    <form action="{{ url_for('subir_evidencias', actividad_id=actividad.id) }}"
+          method="post" enctype="multipart/form-data">
+
+      <input type="file" name="evidencias" accept="image/*" multiple class="form-control mb-2">
+
+      <button class="btn w-100 text-white" style="background: var(--primary);">
+        Subir
+      </button>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<h4 class="fw-bold mt-3" style="color: var(--primary-dark);">Imágenes subidas</h4>
+
+{% if evidencias %}
+<div class="row">
+  {% for e in evidencias %}
+  <div class="col-md-3 mb-3">
+    <div class="card shadow-sm" style="border-radius: 14px; overflow: hidden;">
+
+      <a href="{{ url_for('static', filename=e.ruta_imagen) }}" target="_blank">
+        <img src="{{ url_for('static', filename=e.ruta_imagen) }}" class="card-img-top" style="height:180px; object-fit:cover;">
+      </a>
+
+      <div class="card-body p-2">
+        <small class="text-muted d-block">Subida: {{ e.fecha.strftime('%d/%m/%Y %H:%M') }}</small>
+
+        {% if session.get('rol') in ['Administrador', 'Empleado'] %}
+        <form action="{{ url_for('eliminar_evidencia', evidencia_id=e.id) }}" 
+              method="post" 
+              onsubmit="return confirm('¿Eliminar esta evidencia?');">
+
+          <button class="btn btn-danger btn-sm w-100 mt-2">Eliminar</button>
+        </form>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">Aún no hay evidencias.</p>
+{% endif %}
+
+<a href="{{ url_for('dashboard_empleado') }}" class="btn btn-secondary mt-3">
+  Volver
+</a>
+
+{% endblock %}
+

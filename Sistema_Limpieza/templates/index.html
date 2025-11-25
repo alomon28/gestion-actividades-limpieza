@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 animate-fade">
+    <h2 class="fw-bold" style="color: var(--blue-birds);">
+        Bienvenido al Sistema de Gestión de Limpieza
+    </h2>
+
+    <p class="mt-2" style="color: var(--text-dark);">
+        Por favor 
+        <a href="{{ url_for('login') }}" style="color: var(--panorama-blue); font-weight: 600;">
+            inicia sesión
+        </a> 
+        para continuar.
+    </p>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fw-bold mb-0" style="color: var(--muted-700);">
+          📚 Historial de Cambios
+      </h2>
+      <a href="{{ url_for('dashboard_global') }}"
+         class="btn btn-secondary btn-sm"
+         style="border-radius:8px;">
+          Regresar
+      </a>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="card mb-3"
+       style="border-radius:14px; box-shadow:0 8px 28px rgba(20,40,50,0.06);">
+    <div class="card-body">
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <input type="text" id="buscador" class="form-control"
+                       placeholder="Buscar por usuario o acción...">
+            </div>
+
+            <div class="col-md-4">
+                <select id="filtroUsuario" class="form-select">
+                    <option value="">— Todos los usuarios —</option>
+                    {% for c in historial %}
+                      {% if c.usuario %}
+                        <option value="{{ c.usuario.nombre }}">{{ c.usuario.nombre }}</option>
+                      {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <div class="card"
+       style="border-radius:14px; box-shadow:0 8px 28px rgba(20,40,50,0.06);">
+    <div class="card-body p-0">
+
+      <table class="table table-hover mb-0" id="tablaHistorial">
+        <thead style="background: var(--muted-100); color: var(--muted-700);">
+          <tr>
+            <th>Usuario</th>
+            <th>Acción</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+
+        <tbody id="historialBody">
+        {% for c in historial %}
+          <tr>
+            <td class="usuario">{{ c.usuario.nombre if c.usuario else 'Usuario eliminado' }}</td>
+            <td class="accion">{{ c.accion }}</td>
+            <td class="fecha">
+              {% if c.fecha %}
+                {{ c.fecha.strftime('%d/%m/%Y %H:%M:%S') }}
+              {% else %}
+                <span class="text-muted">Sin fecha</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+
+      </table>
+
+      <!-- PAGINACIÓN -->
+      <div class="d-flex justify-content-center py-3">
+          <button class="btn btn-outline-primary btn-sm me-2" id="prevPage">Anterior</button>
+          <span id="pageInfo" class="fw-bold"></span>
+          <button class="btn btn-outline-primary btn-sm ms-2" id="nextPage">Siguiente</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const buscador = document.getElementById("buscador");
+    const filtroUsuario = document.getElementById("filtroUsuario");
+    const filas = Array.from(document.querySelectorAll("#tablaHistorial tbody tr"));
+
+    let paginaActual = 1;
+    const filasPorPagina = 10;
+
+    function aplicarFiltros() {
+        const txt = buscador.value.toLowerCase();
+        const usuarioSel = filtroUsuario.value.toLowerCase();
+
+        filas.forEach(f => {
+            const usuario = f.querySelector(".usuario").innerText.toLowerCase();
+            const accion = f.querySelector(".accion").innerText.toLowerCase();
+            const okBusqueda = usuario.includes(txt) || accion.includes(txt);
+            const okUsuario = !usuarioSel || usuario === usuarioSel;
+            f.style.display = okBusqueda && okUsuario ? "" : "none";
+        });
+
+        paginaActual = 1;
+        paginar();
+    }
+
+    buscador.addEventListener("input", aplicarFiltros);
+    filtroUsuario.addEventListener("change", aplicarFiltros);
+
+    function paginar() {
+        const visibles = filas.filter(f => f.style.display !== "none");
+        const totalPaginas = Math.ceil(visibles.length / filasPorPagina);
+
+        visibles.forEach((fila, i) => {
+            fila.style.display = (i >= (paginaActual - 1) * filasPorPagina &&
+                                  i < paginaActual * filasPorPagina)
+                                  ? "" : "none";
+        });
+
+        document.getElementById("pageInfo").innerText =
+            `Página ${paginaActual} de ${totalPaginas || 1}`;
+    }
+
+    document.getElementById("prevPage").addEventListener("click", () => {
+        if (paginaActual > 1) paginaActual--;
+        paginar();
+    });
+
+    document.getElementById("nextPage").addEventListener("click", () => {
+        const visibles = filas.filter(f => f.style.display !== "none");
+        const totalPaginas = Math.ceil(visibles.length / filasPorPagina);
+        if (paginaActual < totalPaginas) paginaActual++;
+        paginar();
+    });
+
+    paginar();
+});
+</script>
+
+{% endblock %}

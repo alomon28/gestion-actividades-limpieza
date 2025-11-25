@@ -1,0 +1,72 @@
+<!-- registro.html -->
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .glass-card {
+        backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        border-radius: 16px;
+        transition: transform .3s;
+    }
+    .glass-card:hover {
+        transform: translateY(-3px);
+    }
+</style>
+
+<div class="d-flex justify-content-center mt-4">
+    <div class="glass-card p-4 animate-fade" style="width: 420px;">
+
+        <h4 class="text-center mb-3" style="color: var(--blue-birds); font-weight: bold;">
+            Crear Cuenta
+        </h4>
+
+        <form action="{{ url_for('registro') }}" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label" style="color: var(--text-dark);">Nombre completo</label>
+                <input type="text" class="form-control" name="nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" style="color: var(--text-dark);">Correo electrónico</label>
+                <input type="email" class="form-control" name="correo" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" style="color: var(--text-dark);">Contraseña</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" style="color: var(--text-dark);">Rol</label>
+                <select class="form-control" name="rol" required>
+                    <option value="Empleado">Empleado</option>
+                    <option value="JefeCuadrilla">Jefe de Cuadrilla</option>
+                    <option value="Admin">Administrador</option>
+                    <option value="SuperAdmin">Super Administrador</option>
+                </select>
+            </div>
+
+            <button type="submit" 
+                    class="btn w-100 text-white mt-2" 
+                    style="background: var(--blue-birds); border-radius: 8px;">
+                Registrarse
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span style="color: var(--text-dark);">¿Ya tienes cuenta?</span>
+            <a href="{{ url_for('login') }}" 
+               class="ms-1"
+               style="color: var(--blue-birds); font-weight: bold;">
+                Inicia sesión aquí
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
